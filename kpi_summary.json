@@ -1,0 +1,131 @@
+{
+  "data_note": "SYNTHETIC (hypothetical) warehouse data for an academic project. Not real company data.",
+  "period": "2026-09-01 to 2026-10-31",
+  "kpis": {
+    "total_orders": 2000,
+    "completed_orders_delivered": 1941,
+    "cancelled_orders": 52,
+    "in_transit_orders": 7,
+    "delayed_orders": 328,
+    "on_time_delivery_pct": 83.1,
+    "avg_picking_minutes": 37.4,
+    "avg_packing_minutes": 43.7,
+    "avg_delivery_hours": 36.0,
+    "inventory_shortage_pct": 8.2,
+    "total_operational_cost_rs": 762668.45
+  },
+  "stages": [
+    {
+      "stage": "Receiving",
+      "avg_minutes": 7.6,
+      "median_minutes": 6.0,
+      "delays_caused": 3,
+      "share_of_delays_pct": 0.9
+    },
+    {
+      "stage": "Inventory",
+      "avg_minutes": 21.4,
+      "median_minutes": 5.0,
+      "delays_caused": 64,
+      "share_of_delays_pct": 19.5
+    },
+    {
+      "stage": "Picking",
+      "avg_minutes": 37.4,
+      "median_minutes": 34.0,
+      "delays_caused": 6,
+      "share_of_delays_pct": 1.8
+    },
+    {
+      "stage": "Packing",
+      "avg_minutes": 43.7,
+      "median_minutes": 22.0,
+      "delays_caused": 123,
+      "share_of_delays_pct": 37.5
+    },
+    {
+      "stage": "Dispatch",
+      "avg_minutes": 42.1,
+      "median_minutes": 34.0,
+      "delays_caused": 50,
+      "share_of_delays_pct": 15.2
+    },
+    {
+      "stage": "Delivery",
+      "avg_minutes": 2161.8,
+      "median_minutes": 2177.0,
+      "delays_caused": 82,
+      "share_of_delays_pct": 25.0
+    }
+  ],
+  "top_delay_stage": "Packing",
+  "warehouse_controlled_delays": 246,
+  "courier_delays": 82,
+  "top_delay_reasons": {
+    "Packing station congestion (peak load)": 109,
+    "Stock-out - awaiting replenishment": 64,
+    "Courier delay in transit": 62,
+    "Courier pickup delay": 36,
+    "Dispatch batching wait": 14,
+    "Courier route congestion": 14,
+    "Packing material shortage": 11,
+    "Remote location / address issue": 6
+  },
+  "festive_week_vs_other_days": {
+    "festive_orders_per_day": 65.3,
+    "other_orders_per_day": 28.6,
+    "festive_avg_packing_minutes": 108.9,
+    "other_avg_packing_minutes": 24.5,
+    "festive_delayed_pct": 37.6,
+    "other_delayed_pct": 10.8
+  },
+  "shifts": [
+    {
+      "shift": "Morning",
+      "orders": 770,
+      "employees": 7,
+      "orders_per_employee": 110.0,
+      "avg_picking_minutes": 35.8,
+      "avg_packing_minutes": 43.5,
+      "delayed_pct": 18.6
+    },
+    {
+      "shift": "Evening",
+      "orders": 977,
+      "employees": 7,
+      "orders_per_employee": 139.6,
+      "avg_picking_minutes": 38.4,
+      "avg_packing_minutes": 45.2,
+      "delayed_pct": 15.7
+    },
+    {
+      "shift": "Night",
+      "orders": 245,
+      "employees": 6,
+      "orders_per_employee": 40.8,
+      "avg_picking_minutes": 38.6,
+      "avg_packing_minutes": 37.0,
+      "delayed_pct": 15.7
+    }
+  ],
+  "shortage_pct_by_category": {
+    "Electronics": 12.1,
+    "Toys & Games": 10.5,
+    "Fashion & Apparel": 8.2,
+    "Beauty & Personal Care": 8.0,
+    "Home & Kitchen": 6.5,
+    "Sports & Fitness": 4.9,
+    "Grocery & Gourmet": 4.9,
+    "Books & Stationery": 4.8
+  },
+  "delayed_pct_by_priority": {
+    "Express": 21.3,
+    "Standard": 17.8,
+    "Economy": 11.0
+  },
+  "delayed_pct_by_zone": {
+    "Metro": 17.9,
+    "Tier-2": 14.4,
+    "Remote": 19.5
+  }
+}

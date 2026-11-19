@@ -1,0 +1,29 @@
+{
+  "name": "WarehouseTheme",
+  "dataColors": [
+    "#0FA3A3",
+    "#D32F2F",
+    "#F2A93B",
+    "#13315C",
+    "#7C8DA6",
+    "#5BC0BE",
+    "#8A99AD",
+    "#0B2545"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#0B2545",
+  "tableAccent": "#0FA3A3",
+  "good": "#2E7D32",
+  "neutral": "#F2A93B",
+  "bad": "#D32F2F",
+  "textClasses": {
+    "label": {
+      "fontFace": "Segoe UI",
+      "color": "#0B2545"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "color": "#0B2545"
+    }
+  }
+}

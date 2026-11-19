@@ -1,0 +1,6 @@
+/// Full path to warehouse_orders.csv on YOUR computer. Change it via Home > Transform data > Edit parameters.
+expression DataFilePath = "C:\Users\ishan\OneDrive\Documents\AIM managers\warehouse_orders.csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: c6d0910d-6e3e-5d10-8c22-5761e4318cef
+
+	annotation PBI_ResultType = Text
+

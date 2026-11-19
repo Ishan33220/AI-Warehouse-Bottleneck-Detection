@@ -1,0 +1,21 @@
+Order_ID,Order_Date,Order_Hour,Shift,Customer_Location,Delivery_Zone,Product_Category,Order_Priority,Order_Quantity,Inventory_Status,Receiving_Time_Minutes,Inventory_Check_Time_Minutes,Picking_Time_Minutes,Packing_Time_Minutes,Dispatch_Time_Minutes,Delivery_Time_Minutes,Total_Time_Minutes,SLA_Minutes,Order_Status,Delay_Status,Delay_Stage,Delay_Reason,Warehouse_Employee_ID,Operational_Cost
+ORD-100001,2026-09-01,2,Night,Shimla,Remote,Grocery & Gourmet,Standard,2,Available,9,4,,,,,,3436,Cancelled,Not Applicable,Not Applicable,Not Applicable,EMP018,63.16
+ORD-100002,2026-09-01,6,Morning,Lucknow,Tier-2,Home & Kitchen,Standard,1,Available,6,5,30,13,40,2399,2493,2588,Delivered,On Time,No Delay,No Delay,EMP007,343.76
+ORD-100003,2026-09-01,7,Morning,Lucknow,Tier-2,Grocery & Gourmet,Standard,2,Available,8,4,24,23,35,2406,2500,2588,Delivered,On Time,No Delay,No Delay,EMP004,334.83
+ORD-100004,2026-09-01,8,Morning,Ahmedabad,Metro,Fashion & Apparel,Standard,1,Available,4,5,24,19,40,1607,1699,1952,Delivered,On Time,No Delay,No Delay,EMP003,271.67
+ORD-100005,2026-09-01,10,Morning,Dehradun,Remote,Beauty & Personal Care,Standard,3,Available,7,9,32,22,19,3031,3119,3436,Delivered,On Time,No Delay,No Delay,EMP007,359.76
+ORD-100006,2026-09-01,11,Morning,Dehradun,Remote,Books & Stationery,Express,1,Available,5,6,21,22,27,1181,1263,1475,Delivered,On Time,No Delay,No Delay,EMP005,371.19
+ORD-100023,2026-09-02,8,Morning,Lucknow,Tier-2,Toys & Games,Standard,2,Available,7,5,,,,,,2588,Cancelled,Not Applicable,Not Applicable,Not Applicable,EMP002,56.64
+ORD-100041,2026-09-02,19,Evening,Mumbai,Metro,Home & Kitchen,Standard,4,Available,2,3,91,28,48,2812,2984,1952,Delivered,Delayed,Delivery,Courier delay in transit,EMP014,616.65
+ORD-100048,2026-09-03,10,Morning,Kanpur,Tier-2,Toys & Games,Standard,1,Available,10,4,32,21,59,2493,2619,2588,Delivered,Delayed,Dispatch,Dispatch batching wait,EMP005,428.6
+ORD-100050,2026-09-03,12,Morning,Delhi NCR,Metro,Sports & Fitness,Economy,4,Out of Stock,7,141,43,21,134,2584,2930,2906,Delivered,Delayed,Inventory,Stock-out - awaiting replenishment,EMP002,712.29
+ORD-100068,2026-09-04,7,Morning,Pune,Metro,Beauty & Personal Care,Standard,2,Out of Stock,5,208,33,40,33,1751,2072,1952,Delivered,Delayed,Inventory,Stock-out - awaiting replenishment,EMP005,370.34
+ORD-100075,2026-09-04,11,Morning,Hyderabad,Metro,Toys & Games,Standard,2,Available,4,7,31,16,33,2864,2955,1952,Delivered,Delayed,Delivery,Courier delay in transit,EMP005,332.07
+ORD-100077,2026-09-04,12,Morning,Bengaluru,Metro,Electronics,Economy,1,Available,8,6,,,,,,2906,Cancelled,Not Applicable,Not Applicable,Not Applicable,EMP003,59.85
+ORD-100099,2026-09-04,20,Evening,Varanasi,Tier-2,Electronics,Express,1,Available,8,3,28,106,11,1003,1159,1157,Delivered,Delayed,Packing,Packing station congestion (peak load),EMP008,388.21
+ORD-100198,2026-09-08,14,Evening,Delhi NCR,Metro,Fashion & Apparel,Standard,3,Available,4,3,42,68,34,1833,1984,1952,Delivered,Delayed,Packing,Packing material shortage,EMP012,500.98
+ORD-100378,2026-09-14,11,Morning,Guwahati,Remote,Toys & Games,Standard,3,Available,5,9,57,20,26,3340,3457,3436,Delivered,Delayed,Picking,Picker shortage during peak shift,EMP002,490.8
+ORD-100467,2026-09-17,12,Morning,Hyderabad,Metro,Home & Kitchen,Express,3,Available,10,4,77,141,19,697,948,892,Delivered,Delayed,Packing,Packing material shortage,EMP005,840.16
+ORD-100731,2026-09-27,11,Morning,Bengaluru,Metro,Fashion & Apparel,Express,2,Available,5,4,56,16,54,758,893,892,Delivered,Delayed,Picking,Picker shortage during peak shift,EMP004,508.72
+ORD-101960,2026-10-31,6,Morning,Imphal,Remote,Fashion & Apparel,Economy,3,Available,6,3,26,31,31,,,5026,In Transit,Not Applicable,Not Applicable,Not Applicable,EMP002,371.3
+ORD-101974,2026-10-31,13,Morning,Patna,Tier-2,Beauty & Personal Care,Economy,4,Available,4,6,40,111,28,,,3860,In Transit,Not Applicable,Not Applicable,Not Applicable,EMP006,346.61

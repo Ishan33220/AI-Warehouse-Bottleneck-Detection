@@ -1,0 +1,321 @@
+table Orders
+	lineageTag: 7ca8ad16-cede-599e-9f5b-e9ca6d63ba2e
+
+	measure 'Total Orders' = COUNTROWS(Orders)
+		formatString: #,0
+		displayFolder: 1 Core KPIs
+		lineageTag: df93a45c-1e54-5b5e-a550-eb85edd07d1d
+
+	measure 'Completed Orders' = CALCULATE(COUNTROWS(Orders), Orders[Order_Status] = "Delivered")
+		formatString: #,0
+		displayFolder: 1 Core KPIs
+		lineageTag: c7776d84-f657-53b1-8aa4-0b5fa45c4471
+
+	measure 'Delayed Orders' = CALCULATE(COUNTROWS(Orders), Orders[Delay_Status] = "Delayed")
+		formatString: #,0
+		displayFolder: 1 Core KPIs
+		lineageTag: 24a942f8-870c-5902-a3af-63eaee2f63f3
+
+	measure 'On Time Orders' = CALCULATE(COUNTROWS(Orders), Orders[Delay_Status] = "On Time")
+		formatString: #,0
+		displayFolder: 1 Core KPIs
+		lineageTag: 50c953fe-8c60-5b44-84e6-c506657b1bb8
+
+	measure 'On-Time Delivery %' = DIVIDE([On Time Orders], [On Time Orders] + [Delayed Orders])
+		formatString: 0.0%
+		displayFolder: 1 Core KPIs
+		lineageTag: 1106d318-3fe7-57d5-9dec-e43c83520be5
+
+	measure 'Delay Rate %' = DIVIDE([Delayed Orders], [On Time Orders] + [Delayed Orders])
+		formatString: 0.0%
+		displayFolder: 1 Core KPIs
+		lineageTag: 48530bfe-6c87-5007-8c8c-c13f9ade0562
+
+	measure 'Average Picking Time' = AVERAGE(Orders[Picking_Time_Minutes])
+		formatString: #,0.0
+		displayFolder: 1 Core KPIs
+		lineageTag: 0fdc50c0-84b7-518c-9672-d04a8df7b3c5
+
+	measure 'Average Packing Time' = AVERAGE(Orders[Packing_Time_Minutes])
+		formatString: #,0.0
+		displayFolder: 1 Core KPIs
+		lineageTag: f507559e-e2aa-5855-809c-40dec76403d3
+
+	measure 'Average Dispatch Time' = AVERAGE(Orders[Dispatch_Time_Minutes])
+		formatString: #,0.0
+		displayFolder: 1 Core KPIs
+		lineageTag: 5159dadb-c4ef-58f3-b195-435528813b7e
+
+	measure 'Average Delivery Hours' = DIVIDE(AVERAGE(Orders[Delivery_Time_Minutes]), 60)
+		formatString: #,0.0
+		displayFolder: 1 Core KPIs
+		lineageTag: 9637412c-edd9-551e-b71c-5fe1baf9c9e5
+
+	measure 'Out of Stock Orders' = CALCULATE(COUNTROWS(Orders), Orders[Inventory_Status] = "Out of Stock")
+		formatString: #,0
+		displayFolder: 1 Core KPIs
+		lineageTag: a94b2be0-fe22-5c65-8ade-7b873b9d9933
+
+	measure 'Low Stock Orders' = CALCULATE(COUNTROWS(Orders), Orders[Inventory_Status] = "Low Stock")
+		formatString: #,0
+		displayFolder: 1 Core KPIs
+		lineageTag: 3f0a04ff-f9e6-5945-ad45-7bbabeff8c2e
+
+	measure 'Inventory Shortage %' = DIVIDE([Out of Stock Orders], [Total Orders])
+		formatString: 0.0%
+		displayFolder: 1 Core KPIs
+		lineageTag: 25a5ad18-1a59-505d-8d13-050412a1b859
+
+	measure 'Total Operational Cost' = SUM(Orders[Operational_Cost])
+		formatString: \₹#,0
+		displayFolder: 1 Core KPIs
+		lineageTag: e7aac8e7-4004-55c1-b819-1cc4ce44ed8f
+
+	measure 'Cost per Order' = DIVIDE([Total Operational Cost], [Total Orders])
+		formatString: \₹#,0.00
+		displayFolder: 2 Supporting
+		lineageTag: 89a09d24-976f-5ca0-b229-16ea34cc9fa9
+
+	measure 'Orders per Employee' =
+			DIVIDE(
+			    CALCULATE(COUNTROWS(Orders), Orders[Warehouse_Employee_ID] <> "Unassigned"),
+			    CALCULATE(DISTINCTCOUNT(Orders[Warehouse_Employee_ID]), Orders[Warehouse_Employee_ID] <> "Unassigned")
+			)
+		formatString: #,0.0
+		displayFolder: 2 Supporting
+		lineageTag: cf6b00cf-a140-5f69-ad83-bf2626778a07
+
+	measure 'Warehouse Delays' = CALCULATE([Delayed Orders], Orders[Delay_Stage] <> "Delivery")
+		formatString: #,0
+		displayFolder: 3 Bottleneck
+		lineageTag: e4290152-6df1-5239-ae15-a7eb3e3237ea
+
+	measure 'Courier Delays' = CALCULATE([Delayed Orders], Orders[Delay_Stage] = "Delivery")
+		formatString: #,0
+		displayFolder: 3 Bottleneck
+		lineageTag: 5d387726-c1f0-5021-b4f1-e412836145ce
+
+	measure 'Warehouse Delay Share %' = DIVIDE([Warehouse Delays], [Delayed Orders])
+		formatString: 0.0%
+		displayFolder: 3 Bottleneck
+		lineageTag: 92653188-1d6d-5271-966a-0fe022118c65
+
+	measure 'Biggest Warehouse Bottleneck' =
+			VAR StageDelays =
+			    ADDCOLUMNS(
+			        FILTER(
+			            ALLSELECTED(Orders[Delay_Stage]),
+			            NOT (Orders[Delay_Stage] IN {"Delivery", "No Delay", "Not Applicable"})
+			        ),
+			        "@Delays", CALCULATE([Delayed Orders])
+			    )
+			VAR TopRow = TOPN(1, StageDelays, [@Delays], DESC)
+			RETURN
+			    MAXX(TopRow, Orders[Delay_Stage])
+		displayFolder: 3 Bottleneck
+		lineageTag: 6c38a053-bc8d-50c8-83a8-f24b1309294f
+
+	measure 'Bottleneck Delays' =
+			VAR TopStage = [Biggest Warehouse Bottleneck]
+			RETURN
+			    CALCULATE([Delayed Orders], Orders[Delay_Stage] = TopStage)
+		formatString: #,0
+		displayFolder: 3 Bottleneck
+		lineageTag: cb46d38a-554a-566d-a5ec-feb69c040a27
+
+	measure 'Bottleneck Share of Delays %' = DIVIDE([Bottleneck Delays], [Delayed Orders])
+		formatString: 0.0%
+		displayFolder: 3 Bottleneck
+		lineageTag: 467e7224-88c3-5c9b-84cc-40b048c9fed9
+
+	measure 'Stage Bar Color' =
+			VAR ThisStage = SELECTEDVALUE(Orders[Delay_Stage])
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ThisStage = [Biggest Warehouse Bottleneck], "#D32F2F",
+			        ThisStage = "Delivery", "#8A99AD",
+			        "#13315C"
+			    )
+		displayFolder: 3 Bottleneck
+		lineageTag: 05716f13-0a25-597c-b041-0e81a78957c9
+
+	measure 'Delayed Orders (Top 8 Reasons)' =
+			VAR ReasonRank =
+			    RANKX(ALLSELECTED(Orders[Delay_Reason]), [Delayed Orders], , DESC, Dense)
+			RETURN
+			    IF(ReasonRank <= 8, [Delayed Orders])
+		formatString: #,0
+		displayFolder: 3 Bottleneck
+		lineageTag: b61a9c17-5f96-572e-b00c-ac89d459aa82
+
+	column Order_ID
+		dataType: string
+		lineageTag: 0ad47771-b037-5654-95a7-f629a1afa101
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+	column Order_Date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 5a5a955c-a721-51fb-947b-1fa19ecb5503
+		summarizeBy: none
+		sourceColumn: Order_Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Order_Hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 18c5199a-4edf-5607-a195-cf5c3aab6ce3
+		summarizeBy: none
+		sourceColumn: Order_Hour
+
+	column Shift
+		dataType: string
+		lineageTag: 40fec28b-74a7-5390-9344-984464932873
+		summarizeBy: none
+		sourceColumn: Shift
+
+	column Customer_Location
+		dataType: string
+		lineageTag: 06c7a633-31e1-5460-9d93-e6b4e62386c4
+		summarizeBy: none
+		sourceColumn: Customer_Location
+
+	column Delivery_Zone
+		dataType: string
+		lineageTag: dd34cea3-0bb4-5808-89f1-c116a15ddc78
+		summarizeBy: none
+		sourceColumn: Delivery_Zone
+
+	column Product_Category
+		dataType: string
+		lineageTag: a91238f1-82e6-5b51-8ae6-4f82881e78ea
+		summarizeBy: none
+		sourceColumn: Product_Category
+
+	column Order_Priority
+		dataType: string
+		lineageTag: 4df41976-d51c-5b1e-9ce6-84f321b91549
+		summarizeBy: none
+		sourceColumn: Order_Priority
+
+	column Order_Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: ba37c1c2-ff29-5eb1-af0b-392d6e869bdd
+		summarizeBy: none
+		sourceColumn: Order_Quantity
+
+	column Inventory_Status
+		dataType: string
+		lineageTag: dd836b48-d8ac-5a55-ad1e-3cba83c2ad1b
+		summarizeBy: none
+		sourceColumn: Inventory_Status
+
+	column Receiving_Time_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 561c97e9-ae7d-5518-9538-cf30e1113a04
+		summarizeBy: none
+		sourceColumn: Receiving_Time_Minutes
+
+	column Inventory_Check_Time_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: e4a4483f-5f19-5106-8cc2-15e808d18902
+		summarizeBy: none
+		sourceColumn: Inventory_Check_Time_Minutes
+
+	column Picking_Time_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 925fe3d8-1c75-5d8e-a906-c9ce90f706fc
+		summarizeBy: none
+		sourceColumn: Picking_Time_Minutes
+
+	column Packing_Time_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: f54766c3-db44-57c8-8ca2-8c1399d9277a
+		summarizeBy: none
+		sourceColumn: Packing_Time_Minutes
+
+	column Dispatch_Time_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: b37ee4ac-01ce-5248-979d-20d8f6101b71
+		summarizeBy: none
+		sourceColumn: Dispatch_Time_Minutes
+
+	column Delivery_Time_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: cc964535-b23f-55f4-9aa8-73e9abdaccc5
+		summarizeBy: none
+		sourceColumn: Delivery_Time_Minutes
+
+	column Total_Time_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 19e6df21-194e-5c8d-950d-c75967f5b0f0
+		summarizeBy: none
+		sourceColumn: Total_Time_Minutes
+
+	column SLA_Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b2d6433-9160-5360-945c-f37e2cd7f359
+		summarizeBy: none
+		sourceColumn: SLA_Minutes
+
+	column Order_Status
+		dataType: string
+		lineageTag: 3c04a52b-fbbe-58f2-b84e-0e43186b5109
+		summarizeBy: none
+		sourceColumn: Order_Status
+
+	column Delay_Status
+		dataType: string
+		lineageTag: 1ba867ea-f44e-57eb-ad41-5467b60f4158
+		summarizeBy: none
+		sourceColumn: Delay_Status
+
+	column Delay_Stage
+		dataType: string
+		lineageTag: 52f02d85-d3ad-5944-b51c-728b25747efb
+		summarizeBy: none
+		sourceColumn: Delay_Stage
+
+	column Delay_Reason
+		dataType: string
+		lineageTag: 8d9b0ef2-57ff-5b20-9f7c-81cd23630270
+		summarizeBy: none
+		sourceColumn: Delay_Reason
+
+	column Warehouse_Employee_ID
+		dataType: string
+		lineageTag: 5f28b06f-4d3e-5685-ba74-9e5ac3ce09ac
+		summarizeBy: none
+		sourceColumn: Warehouse_Employee_ID
+
+	column Operational_Cost
+		dataType: double
+		formatString: \₹#,0.00
+		lineageTag: bf5dbb0c-ac05-53ff-8939-c38ec77afd65
+		summarizeBy: none
+		sourceColumn: Operational_Cost
+
+	partition Orders = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFilePath), [Delimiter=",", Columns=24, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Order_ID", type text}, {"Order_Date", type date}, {"Order_Hour", Int64.Type}, {"Shift", type text}, {"Customer_Location", type text}, {"Delivery_Zone", type text}, {"Product_Category", type text}, {"Order_Priority", type text}, {"Order_Quantity", Int64.Type}, {"Inventory_Status", type text}, {"Receiving_Time_Minutes", Int64.Type}, {"Inventory_Check_Time_Minutes", Int64.Type}, {"Picking_Time_Minutes", Int64.Type}, {"Packing_Time_Minutes", Int64.Type}, {"Dispatch_Time_Minutes", Int64.Type}, {"Delivery_Time_Minutes", Int64.Type}, {"Total_Time_Minutes", Int64.Type}, {"SLA_Minutes", Int64.Type}, {"Order_Status", type text}, {"Delay_Status", type text}, {"Delay_Stage", type text}, {"Delay_Reason", type text}, {"Warehouse_Employee_ID", type text}, {"Operational_Cost", type number}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
