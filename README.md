@@ -63,3 +63,14 @@ MBA – Operations & Business Analytics
 
 ## Note
 This is an academic project based on synthetic data, not actual company records. Bottleneck detection uses predefined rules; no trained machine-learning model or autonomous AI system is claimed.
+
+## Power BI Dashboard Preview
+
+### Dashboard – Page 1
+![Dashboard Page 1](Screenshots/Screenshot%202026-11-18%20113256.png)
+
+### Dashboard – Page 2
+![Dashboard Page 2](Screenshots/Screenshot%202026-11-18%20113300.png)
+
+### Dashboard – Page 3
+![Dashboard Page 3](Screenshots/Screenshot%202026-11-18%20113306.png)
