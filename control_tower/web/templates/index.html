@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warehouse Operations Control Tower</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">AI</div>
+        <div>
+          <h1>Control Tower</h1>
+          <p class="subtitle">Warehouse Operations</p>
+        </div>
+      </div>
+
+      <section class="sidebar-section">
+        <h2>System Status</h2>
+        <div id="status-card" class="status-card">
+          <div class="status-row"><span>Dataset</span><strong id="stat-rows">Loading...</strong></div>
+          <div class="status-row"><span>On-Time</span><strong id="stat-ontime">—</strong></div>
+          <div class="status-row"><span>Delayed</span><strong id="stat-delayed">—</strong></div>
+          <div class="status-row"><span>AI Mode</span><strong id="stat-ai">—</strong></div>
+        </div>
+      </section>
+
+      <section class="sidebar-section">
+        <h2>Specialist Agents</h2>
+        <div class="agent-list" id="agent-list">
+          <button class="agent-pill active" data-agent="">Auto-Route (Orchestrator)</button>
+          <button class="agent-pill" data-agent="data_analysis">1. Data Analysis</button>
+          <button class="agent-pill" data-agent="investigate_order">2. Order Delay Investigation</button>
+          <button class="agent-pill" data-agent="bottleneck">3. Bottleneck Detection</button>
+          <button class="agent-pill" data-agent="shift">4. Shift Performance</button>
+          <button class="agent-pill" data-agent="inventory">5. Inventory Shortage</button>
+          <button class="agent-pill" data-agent="recommendations">6. Recommendations</button>
+          <button class="agent-pill" data-agent="report">7. Automated Reporting</button>
+        </div>
+      </section>
+
+      <section class="sidebar-section">
+        <h2>Quick Queries</h2>
+        <div class="quick-queries">
+          <button class="quick-btn" data-query="Show me the KPI overview">KPI Overview</button>
+          <button class="quick-btn" data-query="What is the warehouse bottleneck?">Bottleneck Analysis</button>
+          <button class="quick-btn" data-query="Which shift is busiest and how is workload balanced?">Shift Balance</button>
+          <button class="quick-btn" data-query="What are the inventory shortage rates?">Inventory Shortages</button>
+          <button class="quick-btn" data-query="What are your recommendations to improve operations?">Action Recommendations</button>
+          <button class="quick-btn" data-query="Generate daily operations report">Generate Report</button>
+        </div>
+      </section>
+
+      <section class="sidebar-section powerbi-box">
+        <h2>Power BI Dashboard</h2>
+        <p>Existing dashboard preserved untouched at <code>WarehouseDashboard.pbip</code>.</p>
+      </section>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="main-panel">
+      <header class="topbar">
+        <div>
+          <h2>Agentic Warehouse Operations Assistant</h2>
+          <p class="legend">
+            <span class="badge badge-computed">🟢 COMPUTED (Python)</span>
+            <span class="badge badge-ai">🔵 AI ANALYSIS (Gemini)</span>
+            <span class="badge badge-approval">🟡 REQUIRES APPROVAL</span>
+          </p>
+        </div>
+        <div class="synthetic-tag">Synthetic Dataset (2,000 orders)</div>
+      </header>
+
+      <div id="chat-messages" class="chat-messages">
+        <div class="message agent-message welcome-card">
+          <div class="msg-header">
+            <span class="agent-name">Control Tower Orchestrator</span>
+            <span class="msg-time">Ready</span>
+          </div>
+          <p>Ask any operational question about the warehouse dataset, investigate a specific order ID (e.g., <code>Why was ORD-100042 delayed?</code>), or click a quick query in the sidebar.</p>
+          <p class="muted-note">All numbers are computed directly from <code>warehouse_orders.csv</code>. Consequential recommendations require your explicit approval.</p>
+        </div>
+      </div>
+
+      <form id="chat-form" class="chat-input-bar">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Ask about bottlenecks, shifts, inventory, order IDs (ORD-...), or request a report..."
+          autocomplete="off"
+          required
+        />
+        <button id="send-btn" type="submit">Send</button>
+      </form>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

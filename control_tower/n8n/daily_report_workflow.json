@@ -1,0 +1,75 @@
+{
+  "name": "Warehouse Control Tower - Daily Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7 * * *"
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger-daily",
+      "name": "Daily 07:00 Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"query\": \"Generate daily operations report\",\n  \"agent\": \"report\"\n}",
+        "options": {}
+      },
+      "id": "http-generate-report",
+      "name": "Call Control Tower Reporting Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nreturn [{\n  json: {\n    agent: data.agent,\n    timestamp: data.timestamp,\n    report_path: data.computed?.saved_report || null,\n    snapshot_path: data.computed?.kpi_snapshot || null,\n    summary: data.ai_narrative || ''\n  }\n}];"
+      },
+      "id": "format-report-output",
+      "name": "Extract Report Paths & Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 300]
+    }
+  ],
+  "connections": {
+    "Daily 07:00 Trigger": {
+      "main": [
+        [
+          {
+            "node": "Call Control Tower Reporting Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Control Tower Reporting Agent": {
+      "main": [
+        [
+          {
+            "node": "Extract Report Paths & Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

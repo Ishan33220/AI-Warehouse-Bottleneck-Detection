@@ -1,0 +1,114 @@
+{
+  "name": "Warehouse Control Tower - Delay Threshold Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "warehouse-delay-check",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook-delay-check",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://localhost:8000/api/status",
+        "options": {}
+      },
+      "id": "http-get-status",
+      "name": "Check Control Tower KPI Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-sla-breach",
+              "leftValue": "={{ $json.dataset.on_time_delivery_pct }}",
+              "rightValue": 85,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-delay-threshold",
+      "name": "On-Time Below 85%?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"query\": \"What are your recommendations to improve operations?\",\n  \"agent\": \"recommendations\"\n}",
+        "options": {}
+      },
+      "id": "http-get-recommendations",
+      "name": "Request Action Recommendations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 220]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check Control Tower KPI Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Control Tower KPI Status": {
+      "main": [
+        [
+          {
+            "node": "On-Time Below 85%?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On-Time Below 85%?": {
+      "main": [
+        [
+          {
+            "node": "Request Action Recommendations",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
